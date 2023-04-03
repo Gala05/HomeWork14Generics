@@ -29,7 +29,7 @@ public class TicketRepository {
     }
 }
 
-    public Ticket[] findById(int id) { // возвращает объект по идентификатору
+    public Ticket[] findById(int id) {
         Ticket[] result = new Ticket[1];
         for (Ticket ticket : tickets) {
             if (ticket.getId() == id) {
