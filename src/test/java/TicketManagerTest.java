@@ -1,18 +1,24 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ru.netology.domain.Ticket;
+import ru.netology.domain.TicketByPriceAssComparator;
+import ru.netology.domain.TicketByTimeAssComparator;
 import ru.netology.manager.TicketManager;
 import ru.netology.repository.TicketRepository;
 
 import java.util.Arrays;
 
 public class TicketManagerTest {
-    Ticket ticket1 = new Ticket(254, 5_600, "CSV", "SVO", 90);
-    Ticket ticket2 = new Ticket(576, 5_100, "CSV", "LED", 125);
-    Ticket ticket3 = new Ticket(475, 5_200, "KZN", "SVO", 95);
-    Ticket ticket4 = new Ticket(981, 6_500, "KZN", "LED", 165);
-    Ticket ticket5 = new Ticket(748, 4_500, "CSV", "LED", 125);
-    Ticket ticket6 = new Ticket(971, 4_700, "CSV", "LED", 125);
+    Ticket ticket1 = new Ticket(1, 5_600, "CSV", "SVO", 90);
+    Ticket ticket2 = new Ticket(2, 5_100, "CSV", "LED", 125);
+    Ticket ticket3 = new Ticket(3, 5_200, "KZN", "SVO", 95);
+    Ticket ticket4 = new Ticket(4, 6_500, "KZN", "LED", 165);
+    Ticket ticket5 = new Ticket(5, 4_500, "CSV", "LED", 130);
+    Ticket ticket6 = new Ticket(6, 4_700, "CSV", "LED", 120);
+    Ticket ticket7 = new Ticket(7, 10_700, "CSV", "LED", 128);
+    Ticket ticket8 = new Ticket(8, 3_200, "CSV", "LED", 124);
+    Ticket ticket9 = new Ticket(9, 5_700, "CSV", "LED", 119);
+
     TicketRepository repo = new TicketRepository();
     TicketManager manager = new TicketManager(repo);
 
@@ -42,18 +48,39 @@ public class TicketManagerTest {
     }
 
     @Test
-    public void AllTicketTest() {
-
+    public void findAllTicketSortByPriceTest() {
+        TicketByPriceAssComparator priceAssComparator = new TicketByPriceAssComparator();
         manager.addTicket(ticket1);
         manager.addTicket(ticket2);
         manager.addTicket(ticket3);
         manager.addTicket(ticket4);
         manager.addTicket(ticket5);
         manager.addTicket(ticket6);
+        manager.addTicket(ticket7);
+        manager.addTicket(ticket8);
+        manager.addTicket(ticket9);
 
-        Ticket[] expected = {ticket5, ticket6, ticket2};
-        Ticket[] actual = manager.AllTickets("CSV", "LED");
-        Arrays.sort(actual);
+        Ticket[] expected = {ticket8, ticket5, ticket6, ticket2, ticket9, ticket7};
+        Ticket[] actual = manager.findAll("CSV", "LED", priceAssComparator);
+        Arrays.sort(actual, priceAssComparator );
+        Assertions.assertArrayEquals(expected, actual);
+    }
+    @Test
+    public void findAllTicketSortByTimeTest() {
+        TicketByTimeAssComparator timeAssComparator = new TicketByTimeAssComparator();
+        manager.addTicket(ticket1);
+        manager.addTicket(ticket2);
+        manager.addTicket(ticket3);
+        manager.addTicket(ticket4);
+        manager.addTicket(ticket5);
+        manager.addTicket(ticket6);
+        manager.addTicket(ticket7);
+        manager.addTicket(ticket8);
+        manager.addTicket(ticket9);
+
+        Ticket[] expected = {ticket9, ticket6, ticket8, ticket2, ticket7, ticket5};
+        Ticket[] actual = manager.findAll("CSV", "LED", timeAssComparator);
+        Arrays.sort(actual, timeAssComparator );
         Assertions.assertArrayEquals(expected, actual);
     }
 }
