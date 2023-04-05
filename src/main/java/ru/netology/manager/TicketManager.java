@@ -1,8 +1,10 @@
 package ru.netology.manager;
 
 import ru.netology.domain.Ticket;
+import ru.netology.repository.NotFoundException;
 import ru.netology.repository.TicketRepository;
 
+import java.util.Arrays;
 import java.util.Comparator;
 
 public class TicketManager {
@@ -20,24 +22,10 @@ public class TicketManager {
         repo.save(newTicket);
     }
 
-//    public Ticket[] AllTickets(String fromAirport, String toAirport) {
-//        Ticket[] result = new Ticket[0];
-//        for (Ticket ticket : repo.findAll()) {
-//            if ((ticket.getDepartureAirport() == fromAirport)&&(ticket.getArrivalAirport() == toAirport)) {
-//                Ticket[] tmp = new Ticket[result.length + 1];
-//                for (int i = 0; i < result.length; i++) {
-//                    tmp[i] = result[i];
-//                }
-//                tmp[tmp.length - 1] = ticket;
-//                result = tmp;
-//            }
-//        }
-//        return result;
-//    }
     public Ticket[] findAll(String fromAirport, String toAirport, Comparator<Ticket> comparator) {
         Ticket[] result = new Ticket[0];
         for (Ticket ticket : repo.findAll()) {
-            if ((ticket.getDepartureAirport() == fromAirport)&&(ticket.getArrivalAirport() == toAirport)) {
+            if (matches(ticket, fromAirport, toAirport)) {
                 Ticket[] tmp = new Ticket[result.length + 1];
                 for (int i = 0; i < result.length; i++) {
                     tmp[i] = result[i];
@@ -46,6 +34,22 @@ public class TicketManager {
                 result = tmp;
             }
         }
+        if (result.length == 0) {
+            throw new NotFoundException(
+                    "One of the elements " + fromAirport + " or " + toAirport + " was not found"
+            );
+        }
+        Arrays.sort(result, comparator);
         return result;
+    }
+
+    public boolean matches(Ticket ticket, String fromAirport, String toAirport) {
+        if (ticket.getDepartureAirport().equals(fromAirport)) {
+            if (ticket.getArrivalAirport().equals(toAirport)) {
+                return true;
+            }
+            return false;
+        }
+        return false;
     }
 }

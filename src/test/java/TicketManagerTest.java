@@ -4,6 +4,7 @@ import ru.netology.domain.Ticket;
 import ru.netology.domain.TicketByPriceAssComparator;
 import ru.netology.domain.TicketByTimeAssComparator;
 import ru.netology.manager.TicketManager;
+import ru.netology.repository.NotFoundException;
 import ru.netology.repository.TicketRepository;
 
 import java.util.Arrays;
@@ -62,7 +63,6 @@ public class TicketManagerTest {
 
         Ticket[] expected = {ticket8, ticket5, ticket6, ticket2, ticket9, ticket7};
         Ticket[] actual = manager.findAll("CSV", "LED", priceAssComparator);
-        Arrays.sort(actual, priceAssComparator );
         Assertions.assertArrayEquals(expected, actual);
     }
     @Test
@@ -80,10 +80,77 @@ public class TicketManagerTest {
 
         Ticket[] expected = {ticket9, ticket6, ticket8, ticket2, ticket7, ticket5};
         Ticket[] actual = manager.findAll("CSV", "LED", timeAssComparator);
-        Arrays.sort(actual, timeAssComparator );
         Assertions.assertArrayEquals(expected, actual);
     }
+    @Test
+    public void findOneTicketSortByTimeTest() {
+        TicketByTimeAssComparator timeAssComparator = new TicketByTimeAssComparator();
+        manager.addTicket(ticket1);
+        manager.addTicket(ticket2);
+        manager.addTicket(ticket3);
+        manager.addTicket(ticket4);
+        manager.addTicket(ticket5);
+        manager.addTicket(ticket6);
+        manager.addTicket(ticket7);
+        manager.addTicket(ticket8);
+        manager.addTicket(ticket9);
+
+        Ticket[] expected = {ticket4};
+        Ticket[] actual = manager.findAll("KZN", "LED", timeAssComparator);
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void findOneTicketSortByPriceTest() {
+        TicketByPriceAssComparator priceAssComparator = new TicketByPriceAssComparator();
+        manager.addTicket(ticket1);
+        manager.addTicket(ticket2);
+        manager.addTicket(ticket3);
+        manager.addTicket(ticket4);
+        manager.addTicket(ticket5);
+        manager.addTicket(ticket6);
+        manager.addTicket(ticket7);
+        manager.addTicket(ticket8);
+        manager.addTicket(ticket9);
+
+        Ticket[] expected = {ticket4};
+        Ticket[] actual = manager.findAll("KZN", "LED", priceAssComparator);
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void findNoTicketSortByTimeTest() {
+        TicketByTimeAssComparator timeAssComparator = new TicketByTimeAssComparator();
+        manager.addTicket(ticket1);
+        manager.addTicket(ticket2);
+        manager.addTicket(ticket3);
+        manager.addTicket(ticket4);
+        manager.addTicket(ticket5);
+        manager.addTicket(ticket6);
+        manager.addTicket(ticket7);
+        manager.addTicket(ticket8);
+        manager.addTicket(ticket9);
+
+        Assertions.assertThrows(NotFoundException.class, () ->
+                manager.findAll("KZN", "SMR", timeAssComparator)
+                );
+    }
+
+    @Test
+    public void findNoTicketSortByPriceTest() {
+        TicketByPriceAssComparator priceAssComparator = new TicketByPriceAssComparator();
+        manager.addTicket(ticket1);
+        manager.addTicket(ticket2);
+        manager.addTicket(ticket3);
+        manager.addTicket(ticket4);
+        manager.addTicket(ticket5);
+        manager.addTicket(ticket6);
+        manager.addTicket(ticket7);
+        manager.addTicket(ticket8);
+        manager.addTicket(ticket9);
+
+        Assertions.assertThrows(NotFoundException.class, () ->
+                manager.findAll("KZN", "SMR", priceAssComparator)
+        );
+    }
 }
-
-
-
