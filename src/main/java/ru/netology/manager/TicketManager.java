@@ -3,6 +3,8 @@ package ru.netology.manager;
 import ru.netology.domain.Ticket;
 import ru.netology.repository.TicketRepository;
 
+import java.util.Arrays;
+
 public class TicketManager {
     private TicketRepository repo;
 
@@ -18,10 +20,10 @@ public class TicketManager {
         repo.save(newTicket);
     }
 
-    public Ticket[] AllTickets(String fromAirport, String toAirport) {
+    public Ticket[] аllTickets(String fromAirport, String toAirport) {
         Ticket[] result = new Ticket[0];
         for (Ticket ticket : repo.findAll()) {
-            if ((ticket.getDepartureAirport() == fromAirport) && (ticket.getArrivalAirport() == toAirport)) {
+            if ((ticket.getDepartureAirport().equals(fromAirport)) && ticket.getArrivalAirport().equals(toAirport)) {
                 Ticket[] tmp = new Ticket[result.length + 1];
                 for (int i = 0; i < result.length; i++) {
                     tmp[i] = result[i];
@@ -30,6 +32,7 @@ public class TicketManager {
                 result = tmp;
             }
         }
+        Arrays.sort(result);
         return result;
     }
 }

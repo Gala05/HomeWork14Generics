@@ -52,8 +52,7 @@ public class TicketManagerTest {
         manager.addTicket(ticket6);
 
         Ticket[] expected = {ticket5, ticket6, ticket2};
-        Ticket[] actual = manager.AllTickets("CSV", "LED");
-        Arrays.sort(actual);
+        Ticket[] actual = manager.аllTickets("CSV", "LED");
         Assertions.assertArrayEquals(expected, actual);
     }
 }
