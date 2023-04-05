@@ -62,7 +62,6 @@ public class TicketManagerTest {
 
         Ticket[] expected = {ticket8, ticket5, ticket6, ticket2, ticket9, ticket7};
         Ticket[] actual = manager.findAll("CSV", "LED", priceAssComparator);
-        Arrays.sort(actual, priceAssComparator );
         Assertions.assertArrayEquals(expected, actual);
     }
     @Test
@@ -80,7 +79,6 @@ public class TicketManagerTest {
 
         Ticket[] expected = {ticket9, ticket6, ticket8, ticket2, ticket7, ticket5};
         Ticket[] actual = manager.findAll("CSV", "LED", timeAssComparator);
-        Arrays.sort(actual, timeAssComparator );
         Assertions.assertArrayEquals(expected, actual);
     }
 }
