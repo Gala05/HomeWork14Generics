@@ -2,6 +2,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import ru.netology.domain.Ticket;
 import ru.netology.manager.TicketManager;
+import ru.netology.repository.NotFoundException;
 import ru.netology.repository.TicketRepository;
 
 import java.util.Arrays;
@@ -42,7 +43,7 @@ public class TicketManagerTest {
     }
 
     @Test
-    public void AllTicketTest() {
+    public void AllTicketWhenExistTest() {
 
         manager.addTicket(ticket1);
         manager.addTicket(ticket2);
@@ -54,6 +55,35 @@ public class TicketManagerTest {
         Ticket[] expected = {ticket5, ticket6, ticket2};
         Ticket[] actual = manager.аllTickets("CSV", "LED");
         Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void AllTicketFindOneTicketTest() {
+
+        manager.addTicket(ticket1);
+        manager.addTicket(ticket2);
+        manager.addTicket(ticket3);
+        manager.addTicket(ticket4);
+        manager.addTicket(ticket5);
+        manager.addTicket(ticket6);
+
+        Ticket[] expected = {ticket1};
+        Ticket[] actual = manager.аllTickets("CSV", "SVO");
+        Assertions.assertArrayEquals(expected, actual);
+    }
+    @Test
+    public void AllTicketFindNoTicketTest() {
+
+        manager.addTicket(ticket1);
+        manager.addTicket(ticket2);
+        manager.addTicket(ticket3);
+        manager.addTicket(ticket4);
+        manager.addTicket(ticket5);
+        manager.addTicket(ticket6);
+
+        Assertions.assertThrows(NotFoundException.class,
+                () -> manager.аllTickets("CSV", "SMR")
+                );
     }
 }
 

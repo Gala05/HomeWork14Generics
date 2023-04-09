@@ -1,6 +1,7 @@
 package ru.netology.manager;
 
 import ru.netology.domain.Ticket;
+import ru.netology.repository.NotFoundException;
 import ru.netology.repository.TicketRepository;
 
 import java.util.Arrays;
@@ -23,7 +24,7 @@ public class TicketManager {
     public Ticket[] аllTickets(String fromAirport, String toAirport) {
         Ticket[] result = new Ticket[0];
         for (Ticket ticket : repo.findAll()) {
-            if ((ticket.getDepartureAirport().equals(fromAirport)) && ticket.getArrivalAirport().equals(toAirport)) {
+            if (matches(ticket, fromAirport, toAirport)) {
                 Ticket[] tmp = new Ticket[result.length + 1];
                 for (int i = 0; i < result.length; i++) {
                     tmp[i] = result[i];
@@ -32,7 +33,22 @@ public class TicketManager {
                 result = tmp;
             }
         }
+        if (result.length == 0) {
+            throw new NotFoundException(
+                    "One of the elements " + fromAirport + " or " + toAirport + " was not found"
+            );
+        }
         Arrays.sort(result);
         return result;
     }
+    public boolean matches(Ticket ticket, String fromAirport, String toAirport) {
+        if (ticket.getDepartureAirport().equals(fromAirport)) {
+            if (ticket.getArrivalAirport().equals(toAirport)) {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
 }
