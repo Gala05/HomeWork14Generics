@@ -33,11 +33,11 @@ public class TicketManager {
                 result = tmp;
             }
         }
-        if (result.length == 0) {
-            throw new NotFoundException(
-                    "One of the elements " + fromAirport + " or " + toAirport + " was not found"
-            );
-        }
+//        if (result.length == 0) {
+//            throw new NotFoundException(
+//                    "One of the elements " + fromAirport + " or " + toAirport + " was not found"
+//            );
+//        }
         Arrays.sort(result);
         return result;
     }

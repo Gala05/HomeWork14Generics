@@ -81,9 +81,12 @@ public class TicketManagerTest {
         manager.addTicket(ticket5);
         manager.addTicket(ticket6);
 
-        Assertions.assertThrows(NotFoundException.class,
-                () -> manager.аllTickets("CSV", "SMR")
-                );
+        Ticket[] expected = {};
+        Ticket[] actual = manager.аllTickets("CSV", "SMR");
+        Assertions.assertArrayEquals(expected, actual);
+//        Assertions.assertThrows(NotFoundException.class,
+//                () -> manager.аllTickets("CSV", "SMR")
+//                );
     }
 }
 
